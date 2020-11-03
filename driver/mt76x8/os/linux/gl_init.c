@@ -3315,6 +3315,7 @@ static VOID unregisterDriver(void)
 */
 /*----------------------------------------------------------------------------*/
 /* 1 Module Entry Point */
+extern void extern_wifi_set_enable(int is_on);
 static int initWlan(void)
 {
 	int ret = 0;
@@ -3323,7 +3324,10 @@ static int initWlan(void)
 #if CFG_CHIP_RESET_SUPPORT
 	rst_data.entry_conut = 0;
 #endif
-
+    extern_wifi_set_enable(0);
+    msleep(200);
+    extern_wifi_set_enable(1);
+    msleep(200);
 
 #ifdef CFG_DRIVER_INF_NAME_CHANGE
 
@@ -3367,6 +3371,7 @@ static VOID exitWlan(void)
 #endif
 
 	unregisterDriver();
+    extern_wifi_set_enable(0);
 }				/* end of exitWlan() */
 
 #if ((MTK_WCN_HIF_SDIO == 1) && (CFG_BUILT_IN_DRIVER == 1))
